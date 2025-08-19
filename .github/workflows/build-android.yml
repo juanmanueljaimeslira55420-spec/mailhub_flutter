@@ -1,9 +1,11 @@
+
 name: Build Flutter Android
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build:
@@ -22,10 +24,16 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.22.0' # Usa la versión que tengas instalada localmente
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build APK
         run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
